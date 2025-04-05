@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoModa CR - Ropa Usada de Calidad</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-green-700 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">EcoModa CR</h1>
+      <nav>
+        <a href="#productos" class="ml-4 hover:underline">Productos</a>
+        <a href="#sobre" class="ml-4 hover:underline">Sobre Nosotros</a>
+        <a href="#contacto" class="ml-4 hover:underline">Contacto</a>
+        <a href="#vender" class="ml-4 hover:underline">Vender Ropa</a>
+        <a href="#carrito" class="ml-4 hover:underline">Carrito (<span id="carrito-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="text-center py-12 bg-white">
+    <h2 class="text-3xl font-bold text-green-700 mb-4">¡Ropa usada en excelente estado y a precios accesibles!</h2>
+    <p class="text-lg text-gray-700">Compra inteligente y sostenible desde cualquier lugar de Costa Rica.</p>
+  </section>
+
+  <section id="productos" class="py-12 px-4">
+    <div class="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Producto ejemplo -->
+      <div class="bg-white rounded-lg shadow-md p-4">
+        <img src="https://via.placeholder.com/300x300" alt="Producto 1" class="w-full h-64 object-cover rounded">
+        <h3 class="text-xl font-semibold mt-2">Camisa Vintage</h3>
+        <p class="text-green-700 font-bold">₡4,000</p>
+        <button onclick="agregarAlCarrito('Camisa Vintage', 4000)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Agregar al carrito</button>
+      </div>
+      <!-- Más productos pueden ir aquí -->
+    </div>
+  </section>
+
+  <section id="carrito" class="bg-white py-12 px-4 hidden">
+    <div class="container mx-auto">
+      <h2 class="text-2xl font-bold mb-4 text-center">Carrito de Compras</h2>
+      <ul id="lista-carrito" class="mb-4 text-gray-700"></ul>
+      <p id="total-carrito" class="text-xl font-bold text-center">Total: ₡0</p>
+      <div class="text-center mt-4">
+        <form action="https://www.paypal.com/donate" method="post" target="_blank">
+          <input type="hidden" name="business" value="tu-correo@paypal.com">
+          <input type="hidden" name="currency_code" value="CRC">
+          <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Pagar con PayPal</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="vender" class="bg-gray-200 py-12 px-4">
+    <div class="container mx-auto max-w-xl">
+      <h2 class="text-2xl font-bold mb-4 text-center">¿Quieres vender tu ropa?</h2>
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Nombre del artículo:</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="text" placeholder="Ej. Jeans Levi's" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Precio sugerido (₡):</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="number" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Tu correo electrónico:</label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="email" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Descripción:</label>
+          <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Enviar para revisión</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="contacto" class="py-12 px-4">
+    <div class="container mx-auto text-center">
+      <h2 class="text-2xl font-bold mb-4">Contáctanos</h2>
+      <p class="mb-2">¿Tienes preguntas o quieres vender tu ropa usada?</p>
+      <p>Email: <a href="mailto:info@ecomoda.cr" class="text-green-700 hover:underline">info@ecomoda.cr</a></p>
+      <p>WhatsApp: <a href="https://wa.me/50660001111" class="text-green-700 hover:underline">+506 6000 1111</a></p>
+    </div>
+  </section>
+
+  <footer class="bg-green-700 text-white text-center p-4">
+    <p>&copy; 2025 EcoModa CR. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    let carrito = [];
+
+    function agregarAlCarrito(nombre, precio) {
+      carrito.push({ nombre, precio });
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      const lista = document.getElementById('lista-carrito');
+      const total = document.getElementById('total-carrito');
+      const count = document.getElementById('carrito-count');
+      const seccion = document.getElementById('carrito');
+
+      lista.innerHTML = '';
+      let suma = 0;
+
+      carrito.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.nombre} - ₡${item.precio}`;
+        lista.appendChild(li);
+        suma += item.precio;
+      });
+
+      total.textContent = `Total: ₡${suma}`;
+      count.textContent = carrito.length;
+      seccion.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
